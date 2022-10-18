@@ -2,10 +2,10 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from 'passport-local';
 import bcrypt from 'bcrypt';
 import __dirname from "../utils/utils.js";
-import userModel from './users-controller.js'
-import { transporter } from "../services/nodeMailer.js";
+import userModel from '../services/users-service.js'
+import { transporter } from "../middlewares/nodeMailer.js";
 import dotenv from 'dotenv';
-import logger from '../services/logs.js'
+import logger from '../middlewares/logs.js'
 
 dotenv.config()
 

@@ -42,4 +42,4 @@ export class Cart {
     }
 };
 
-// export default Cart
+// export default new Cart

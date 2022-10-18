@@ -1,8 +1,16 @@
 import { Router } from "express";
-import authController from "../controllers/auth-controller.js";
 
-const router = Router();
+const logoutRouter = Router();
 
-router.get("/logout", authController.getLogout);
+//Middleware de autenticacion.
+const authMiddleware = (req, res, next) => {
+    if (!req.isAuthenticated()) return res.redirect("/login");
+    next();
+};
 
-export default router;
+logoutRouter.get('/', authMiddleware, function (req, res, next) {
+    req.logout();
+    res.redirect('/');
+});
+
+export default logoutRouter;

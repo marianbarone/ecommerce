@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import logger from "../services/logs.js";
+import { Cart } from '../models/cart.js';
 
 class userModel {
     constructor(collectionName) {
@@ -49,6 +49,39 @@ class userModel {
             logger.error("error al obtener user por USERNAME", error);
         }
     }
+
+    async getUserOrder(req, res, next) {
+        Order.find({ user: req.user }, function (err, orders) {
+            if (err) {
+                return res.write('Error!');
+            }
+            let cart;
+            orders.forEach(function (order) {
+                cart = new Cart(order.cart);
+                order.items = cart.generateArray();
+            });
+            res.render('user/profile', { orders: orders });
+        });
+    }
+
 }
 
 export default new userModel('User');
+
+// const getUserOrder = async (req, res, next) => {
+//     Order.find({ user: req.user }, function (err, orders) {
+//         if (err) {
+//             return res.write('Error!');
+//         }
+//         let cart;
+//         orders.forEach(function (order) {
+//             cart = new Cart(order.cart);
+//             order.items = cart.generateArray();
+//         });
+//         res.render('user/profile', { orders: orders });
+//     });
+// };
+
+// export {
+//     getUserOrder
+// }

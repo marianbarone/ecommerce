@@ -1,7 +1,7 @@
 import { Router } from "express";
-import authController from "../controllers/auth-controller.js";
+import userModel from '../services/users-service.js'
 
-const router = Router();
+const profileRouter = Router();
 
 //Middleware de autenticacion.
 const authMiddleware = (req, res, next) => {
@@ -9,6 +9,6 @@ const authMiddleware = (req, res, next) => {
     next();
 };
 
-router.get("/", authMiddleware, authController.getRoot);
+profileRouter.get('/', authMiddleware, userModel.getUserOrder);
 
-export default router;
+export default profileRouter;

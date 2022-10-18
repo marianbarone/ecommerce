@@ -7,21 +7,17 @@ import passport from "passport";
 import dotenv from 'dotenv';
 dotenv.config()
 import connectDB from './config/config.js'
-import mongoose from "mongoose";
-import routes from './routes/index.js'
+import routes from './routes/api.js'
 import os from "os";
 import cluster from "cluster"
 import compression from 'compression'
-import logger from "./services/logs.js";
-
-
+import logger from "./middlewares/logs.js";
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(compression())
-
 
 const modo = parseInt(process.argv[3]) || 'FORK'
 const cpus = os.cpus();

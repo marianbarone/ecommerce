@@ -87,10 +87,10 @@
                             <td data-th="Price" style="color: #ffffff">${{ this.price }}</td>
                             <td data-th="Quantity" style="color: #ffffff">{{ this.qty }}</td>
                             <td class="actions" data-th="">
-                                <a href="/reduce/{{this.item._id}}">
+                                <a href="/shopping-cart/reduce/{{this.item._id}}">
                                     <button class="btn btn-primary btn-sm"><i class="fa fa-minus"></i></button>
                                 </a>
-                                <a href="/remove/{{this.item._id}}">
+                                <a href="/shopping-cart/remove/{{this.item._id}}">
                                     <button class="btn btn-primary btn-sm"><i class="fa fa-trash"></i></button>
                                 </a>                            
                             </td>
@@ -99,11 +99,14 @@
 
                 </tbody>
                 <tfoot>
-                    <tr>
-                        <td colspan="2" class="hidden-xs"></td>
-                        <td class="hidden-xs text-center" style="color: #ffffff"><strong>Total ${{ totalPrice }}</strong></td>
-                        <td><a href="/checkout" class="btn btn-primary btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
-                    </tr>
+                    <form action="/checkout" method="post" id="checkout-form">
+                        <tr>
+                            <td colspan="2" class="hidden-xs"></td>
+                            <td class="hidden-xs text-center" style="color: #ffffff"><strong>Total ${{ totalPrice }}</strong></td>
+                            <td><button type="submit" class="btn btn-primary">Comprar</button></td>
+
+                            {{!-- <td><a href="/checkout" class="btn btn-primary btn-block">Checkout <i class="fa fa-angle-right"></i></a></td> --}}
+                        </tr>
                 </tfoot>
             </table>
     {{ else }}

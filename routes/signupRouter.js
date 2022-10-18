@@ -3,28 +3,20 @@ import authController from "../controllers/auth-controller.js";
 import __dirname from "../utils/utils.js";
 import multer from "multer";
 
-const makeRandomString = (length = 8) => {
-    return Math.random().toString(16).substring(2, length);
-};
+const signupRouter = Router();
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, __dirname + "/public/uploads");
     },
     filename: (req, file, cb) => {
-        cb(null, `avatar-${req.body.firstName}-${makeRandomString()}-${file.originalname}`);
+        cb(null, `avatar-${file.originalname}`);
     }
 });
+
 const upload = multer({ storage });
 
-const router = Router();
+signupRouter.get("/", authController.getSignup);
+signupRouter.post("/", upload.single("avatar"), authController.postSignup);
 
-router.get("/", authController.getSignup);
-router.post("/", authController.postSignup);
-router.post("/", upload.single("avatar"), (req, res, next) => {
-    const file = req.file;
-    if (!file) return res.status(400).json('Error al subir archivo de imagen (avatar)');
-    next();
-}, authController.postSignup);
-
-export default router;
+export default signupRouter;
