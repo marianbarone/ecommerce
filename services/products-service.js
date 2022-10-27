@@ -1,4 +1,5 @@
 import Product from '../models/product.js';
+// import { ProductDao } from '../daos/index.js';
 
 const getAll = async () => {
     try {

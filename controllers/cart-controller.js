@@ -1,6 +1,7 @@
 //Models
-import Product from '../models/product.js';
+// import Product from '../models/product.js';
 import { Cart } from '../models/cart.js';
+import { ProductDao } from '../daos/index.js';
 
 import __dirname from "../utils/utils.js";
 
@@ -9,7 +10,7 @@ const addToCart = async (req, res, next) => {
     var productId = req.params.id;
     var cart = new Cart(req.session.cart ? req.session.cart : {});
 
-    Product.findById(productId, function (err, product) {
+    ProductDao.findById(productId, function (err, product) {
         if (err) {
             return res.redirect('/');
         }

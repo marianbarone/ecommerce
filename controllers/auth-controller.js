@@ -2,10 +2,15 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from 'passport-local';
 import bcrypt from 'bcrypt';
 import __dirname from "../utils/utils.js";
-import userModel from '../services/users-service.js'
+// import userModel from '../services/users-service.js'
 import { transporter } from "../middlewares/nodeMailer.js";
 import dotenv from 'dotenv';
 import logger from '../middlewares/logs.js'
+import { UserDao } from '../daos/index.js'
+// import daos from "../daos/index.js";
+
+
+console.log(UserDao)
 
 dotenv.config()
 
@@ -24,7 +29,7 @@ const isValidPassword = (password, encPassword) => {
 passport.use('login', new LocalStrategy(
     async (username, password, done) => {
 
-        const user = await userModel.getByUsername(username);
+        const user = await UserDao.getByUsername(username);
 
         logger.info(user)
 
@@ -38,7 +43,7 @@ passport.serializeUser((user, done) => {
     done(null, user.username);
 });
 passport.deserializeUser(async (username, done) => {
-    const user = await userModel.getByUsername(username);
+    const user = await UserDao.getByUsername(username);
     done(null, user);
 });
 
@@ -72,7 +77,7 @@ const postSignup = async (req, res) => {
         avatar: req.body.file,
     }
 
-    const userDB = await userModel.createUser(newUser);
+    const userDB = await UserDao.createUser(newUser);
 
     logger.info(newUser)
 
