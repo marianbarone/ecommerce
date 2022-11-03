@@ -84,12 +84,14 @@ if (modo == "CLUSTER" && cluster.isPrimary) {
         next();
     });
 
+    app.use('/api', routes);
     app.use('/', routes);
+
 
     app.use((req, res, next) => {
         logger.info(`Ruta: ${req.url} | Método: ${req.method}`);
         next();
-    });    
+    });
 
 
 }

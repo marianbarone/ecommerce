@@ -10,6 +10,14 @@ const getAll = async () => {
     }
 }
 
+const createProduct = async (productToCreate) => {
+    const createdProduct = await Product.create(productToCreate);
+
+    return createdProduct;
+};
+
+
 export {
-    getAll
+    getAll,
+    createProduct
 }

@@ -6,5 +6,4 @@ const shopRouter = Router();
 /* GET home page. */
 shopRouter.get('/', getShop);
 
-
 export default shopRouter;

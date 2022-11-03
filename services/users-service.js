@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { Cart } from '../models/cart.js';
+import logger from "../middlewares/logs.js";
 
 class userModel {
     constructor(collectionName) {
