@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { Cart } from '../models/cart.js';
+import { errorHandler } from "../middlewares/errorHandler.js";
 
 class userMongoService {
     constructor(collectionName) {
@@ -18,8 +19,8 @@ class userMongoService {
     async getUser(req, res) {
         try {
             const user = req.user
-        } catch (error) {
-            res.status(500).json({ message: 'Error getting users' })
+        } catch (err) {
+            return errorHandler(err, res);
         }
     }
 
@@ -27,8 +28,8 @@ class userMongoService {
         try {
             const user = await this.model.create(data);
             return user;
-        } catch (error) {
-            logger.error("error al crear usuario: ", error);
+        } catch (err) {
+            return errorHandler(err, res);
         }
     }
 
@@ -36,8 +37,8 @@ class userMongoService {
         try {
             const data = await this.model.findOne({ _id: id });
             return data;
-        } catch (error) {
-            logger.error("error al obtener user por ID", error);
+        } catch (err) {
+            return errorHandler(err, res);
         }
     }
 
@@ -45,8 +46,8 @@ class userMongoService {
         try {
             const data = await this.model.findOne({ username });
             return data;
-        } catch (error) {
-            logger.error("error al obtener user por USERNAME", error);
+        } catch (err) {
+            return errorHandler(err, res);
         }
     }
 

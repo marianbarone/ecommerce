@@ -28,9 +28,15 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Tienda</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/products/category/Action">Acción</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/products/category/Drama">Drama</a>
+                    </li>
                     <li>
                         <a class="nav-link" href="/shopping-cart/">
-                            <i class="fa-regular fa-cart-shopping" aria-hidden="true"></i> Carrito
+                             Carrito
                             <span class="badge" style="color: #000000">{{session.cart.totalQty}}</span>
                         </a>
                     </li>
@@ -58,8 +64,6 @@
             </div>
         </div>
     </nav>
-
-
 
     {{# each products }}
     <div class="row mt-4 row-cols-4 mx-auto">

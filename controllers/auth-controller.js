@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 import logger from '../middlewares/logs.js'
 // import { UserDao } from '../daos/index.js'
 // import daos from "../daos/index.js";
+import { errorHandler } from '../middlewares/errorHandler.js'
 
 
 dotenv.config()
@@ -72,7 +73,7 @@ const postSignup = async (req, res) => {
         address: req.body.address,
         age: req.body.age,
         phone: req.body.phone,
-        avatar: req.body.file,
+        // avatar: req.body.file,
     }
 
     const userDB = await userModel.createUser(newUser);
@@ -80,10 +81,10 @@ const postSignup = async (req, res) => {
     logger.info(newUser)
 
     if (!userDB) return res.render("error", { error: "El usuario o el mail ya están registrados" });
-    
+
     const sendEmail = {
         from: 'Blockbuster',
-        to: process.env.TEST_MAIL, 
+        to: process.env.TEST_MAIL,
         subject: 'Nuevo registro',
         html: `<h2> Acaba de registrarse un nuevo usuario </h2> <br>
         <h3> Datos: </h3>
@@ -92,8 +93,7 @@ const postSignup = async (req, res) => {
         <p>Dirección: ${userDB.address}</p>
         <p>Edad: ${userDB.age}</p>
         <p>Teléfono: ${userDB.phone}</p>
-        <p>Adjunto se encuentra la imágen</p>
-        `,
+        `
         // attachments: [
         //     { path: __dirname + "/public" + userDB.avatar }
         // ]
@@ -101,8 +101,8 @@ const postSignup = async (req, res) => {
 
     try {
         await transporter.sendMail(sendEmail);
-    } catch (error) {
-        logger.error(error);
+    } catch (err) {
+        return errorHandler(err, res);
     }
 
     res.redirect("/login");
@@ -111,13 +111,19 @@ const postSignup = async (req, res) => {
 
 // LOGOUT
 const getLogout = (req, res) => {
-    if (req.isAuthenticated()) {
-        const name = req.user.username;
-        req.logout({}, err => err && logger.error(err));
-        return res.render("logout.ejs", { name })
-    };
+    try {
+        if (req.isAuthenticated()) {
+            const name = req.user.username;
+            req.logout({}, err => err && logger.error(err));
+            res.redirect("/login");
+        };
 
-    res.redirect("/login");
+        res.redirect("/login");
+
+    } catch (err) {
+        return errorHandler(err, res);
+    }
+
 }
 
 const failRoute = (req, res) => {

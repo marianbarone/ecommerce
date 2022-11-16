@@ -5,5 +5,7 @@ const shopRouter = Router();
 
 /* GET home page. */
 shopRouter.get('/', getShop);
+// shopRouter.get('/Action', getAction);
+// shopRouter.get('/Drama', getDrama);
 
 export default shopRouter;
