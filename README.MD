@@ -4,6 +4,8 @@ Mariano Barone
 La entrega se realizo de tal forma que se permita probar todas las funcionalidades desde el front (realizado principalmente en Handlebars)
 Lo unico no testeable desde el front es el filtro de categorias ya que devuelve un json cuando se clickea en el filtro de la NavBar en vez de renderizar la vista. De todas formas puede testearse tambien mediante la api (http://localhost:8080/api/products/category/:category) siendo :category Action o Drama.
 
+Ademas se encuentra subido en https://ecommerce-marianobarone.herokuapp.com/
+
 image.png
 
 La home no solicita iniciar sesion para poder ver los productos, tal como funciona cualquier ecommerce.
