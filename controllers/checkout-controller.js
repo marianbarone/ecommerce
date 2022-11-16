@@ -47,12 +47,12 @@ const checkout = async (req, res) => {
         }
     };
 
-    const orderJson = async(id) => {
-        const response = await getOrderById(id)
-        return {response}
-    }
+    // const orderJson = async(id) => {
+    //     const response = await getOrderById(id)
+    //     return {response}
+    // }
 
-    console.log(orderJson)
+    // console.log(orderJson)
 
     //Envío de mail con los datos del nuevo pedido.
     const sendEmail = {
@@ -67,11 +67,6 @@ const checkout = async (req, res) => {
         <br>
         <h3> Datos del pedido: </h3>
         <br>
-        <ul>
-            ${order.cart.forEach(prod => {
-                return `<li>Nombre: ${prod.item.title} | Precio unitario: ${prod.item.price} | Cantidad: ${prod.item.qty} | Total: ${prod.precio * prod.quantity}</li>`
-            }).join("")}
-        </ul>
         <p>${order.cart.items}</p >
         <p>Cantidades totales: ${order.cart.totalQty}</p >
         <p>Total: ${order.cart.totalPrice}</p >

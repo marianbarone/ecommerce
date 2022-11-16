@@ -16,6 +16,7 @@ import { Server as IOServer } from "socket.io";
 import MessageService from './services/messages-service.js';
 import messagesController from './controllers/messages-controller.js';
 import flash from 'connect-flash'
+import Message from './models/messages.js';
 
 
 const app = express();
@@ -47,22 +48,6 @@ if (modo == "CLUSTER" && cluster.isPrimary) {
 
     //Sockets
 
-    // const io = new IOServer(serverExpress)
-    // const chat = new MessageService()
-    // io.on('connection', async socket => {
-    //     console.log(`Se conecto un usuario ${socket.id}`)
-    //     const messages = await chat.getAllMessages()
-
-    //     io.emit('server:message', messages)
-
-    //     socket.on('client:message', async messageInfo => {
-    //         const { email, message } = messageInfo
-    //         await chat.newMessages(email, message)
-    //         const messages = await chat.getAllMessages()
-    //         io.emit('server:message', messages)
-    //     })
-    // })
-
     const io = new IOServer(serverExpress);
 
     let nickNames = [];
@@ -72,23 +57,17 @@ if (modo == "CLUSTER" && cluster.isPrimary) {
 
         //Al recibir un mensaje recojemos los datos
         socket.on('enviar mensaje', async (datos) => {
-            //console.log(datos);
-            //Lo enviamos a todos los usuarios (clientes)
+            
+
             io.sockets.emit('nuevo mensaje', {
-                messsage: datos,
-                email: socket.nickname
+                msg: datos,
+                nick: socket.nickname
             });
 
-            // await messagesController.addMessage(datos);         
+            let chatMessage = new Message({ msg: datos, nick: socket.nickname });
+            chatMessage.save();
 
         });
-
-        // socket.on('client:message', async messageInfo => {
-        //     await messagesController.addMessage(messageInfo);         
-        //     chat = await messagesController.getMessages();                  
-        //     io.emit('server:messages', chat);
-        // })
-
 
         socket.on('nuevo usuario', (datos, callback) => {
 
@@ -124,19 +103,6 @@ if (modo == "CLUSTER" && cluster.isPrimary) {
 
     });
 
-    //Conexion websockets
-    // io.on('connection', async socket => {
-    //     console.log(`Un usuario se ha conectado: ${socket.id}`);
-    //       // CREA LA TABLA DE CHATS SI ESTA NO EXISTIA
-    //     let chat = await messagesController.getMessages();                 // SE TRAEN TODOS LOS CHATS DE LA TABLA
-
-    //     io.emit('server:messages', chat);                             // AL ESTABLECERSE LA CONEXION SE LE ENVIAN AL CLIENTE LOS PRODUCTOS QUE HAYA EN LA BBDD
-    //     socket.on('client:message', async messageInfo => {
-    //         await messagesController.addMessage(messageInfo);         // CUANDO EL CLIENTE LE ENVIA AL SERVIDOR UN NUEVO PRODUCTO DESDE EL SERVIDOR SE LO GUARDA EN LA BBDD
-    //         chat = await messagesController.getMessages();                   // SE ESPERA A QUE SE TRAIGAN TODOS LOS PRODUCTOS DE LA BBDD Y SE LOS ALMACENA EN UNA VARIABLE  
-    //         io.emit('server:messages', chat);                        // SE ENVIA AL CLIENTE LA VARIABLE CONTENEDORA DE TODOS LOS PRODUCTOS PARA QUE SE RENDERICEN
-    //     })
-    // })
 
     const error404 = (request, response, next) => {
         let mensajeError = {
@@ -148,7 +114,6 @@ if (modo == "CLUSTER" && cluster.isPrimary) {
 
         next();
     };
-
 
     app.use(session({
         secret: 'keyboard cat',

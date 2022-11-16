@@ -2,11 +2,11 @@ import mongoose from 'mongoose';
 var Schema = mongoose.Schema;
 
 var schema = new Schema({
-  email: {
+  nick: {
     type: String,
     required: true,
   },
-  message: {
+  msg: {
     type: String,
     required: true,
   },

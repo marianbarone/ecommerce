@@ -23,16 +23,16 @@ import { errorHandler } from "../middlewares/errorHandler.js";
 class messagesController {
   constructor(collectionName) {
     const MessageSchema = mongoose.Schema({
-      author: {
-        email: { type: String, require: true },
-        nombre: { type: String, default: null },
-        apellido: { type: String, default: null },
-        edad: { type: Number, default: null },
-        alias: { type: String, default: null },
-        avatar: { type: String, default: "https://cdn3.iconfinder.com/data/icons/avatars-set1/32/ava32px040-256.png" }
-      },
-      text: { type: String, require: true },
-      date: { type: Date, default: Date.now }
+      // author: {
+      //   email: { type: String, require: true },
+      //   nombre: { type: String, default: null },
+      //   apellido: { type: String, default: null },
+      //   edad: { type: Number, default: null },
+      //   alias: { type: String, default: null },
+      //   avatar: { type: String, default: "https://cdn3.iconfinder.com/data/icons/avatars-set1/32/ava32px040-256.png" }
+      // },
+      msg: { type: String, require: true },
+      nick: { type: String, require: true }
     });
     this.model = mongoose.model(collectionName, MessageSchema);
   }
@@ -52,6 +52,11 @@ class messagesController {
     } catch (err) {
       return errorHandler(err, res);
     }
+  }
+
+  //INDEX
+  async getChat(req, res) {
+    res.render("user/profile")
   }
 }
 

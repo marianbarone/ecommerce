@@ -3,6 +3,6 @@ import messagesController from "../controllers/messages-controller.js";
 
 const chatRouter = Router();
 
-chatRouter.get('/:username', messagesController.getMessages);
+chatRouter.get('/', messagesController.getChat);
 
 export default chatRouter;
