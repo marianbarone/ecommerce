@@ -56,7 +56,7 @@ class messagesController {
 
   //INDEX
   async getChat(req, res) {
-    res.render("user/profile")
+    res.render("user/chat")
   }
 }
 

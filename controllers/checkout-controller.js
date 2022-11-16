@@ -7,7 +7,7 @@ import { createOrder, getOrderById } from '../services/order-service.js';
 
 //Mensajeria
 import { transporter } from "../middlewares/nodeMailer.js";
-import client from "../middlewares/twilio.js";
+// import client from "../middlewares/twilio.js";
 
 //Logs
 import logger from "../middlewares/logs.js";
@@ -47,12 +47,8 @@ const checkout = async (req, res) => {
         }
     };
 
-    // const orderJson = async(id) => {
-    //     const response = await getOrderById(id)
-    //     return {response}
-    // }
-
-    // console.log(orderJson)
+    const orderJson = JSON.stringify(order.cart.items)
+    console.log(orderJson)
 
     //Envío de mail con los datos del nuevo pedido.
     const sendEmail = {
@@ -67,7 +63,7 @@ const checkout = async (req, res) => {
         <br>
         <h3> Datos del pedido: </h3>
         <br>
-        <p>${order.cart.items}</p >
+        <p>${JSON.stringify(order.cart.items)}</p >
         <p>Cantidades totales: ${order.cart.totalQty}</p >
         <p>Total: ${order.cart.totalPrice}</p >
         `
@@ -96,16 +92,16 @@ const checkout = async (req, res) => {
     
     //SMS
     //Envio de SMS al cliente (Con twilio en version de prueba solo se puede enviara numeros verificados... Por eso no se pasa el del cliente como deberia ser).
-    const sms = {
-        body: `Hola, ${req.user.username}. Su pedido ha sido recibido y se encuentra en proceso.`,
-        from: process.env.TWILIO_SMS_FROM,
-        to: `${req.user.phone}`
-    }
+    // const sms = {
+    //     body: `Hola, ${req.user.username}. Su pedido ha sido recibido y se encuentra en proceso.`,
+    //     from: process.env.TWILIO_SMS_FROM,
+    //     to: `${req.user.phone}`
+    // }
 
     try {
         await transporter.sendMail(sendEmail);
         // await client.messages.create(whatsapp);
-        await client.messages.create(sms);
+        // await client.messages.create(sms);
     } catch (err) {
         return errorHandler(err, res);
     }
